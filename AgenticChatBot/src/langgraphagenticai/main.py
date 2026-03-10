@@ -32,8 +32,11 @@ def load_langgraph_agenticai_app():
             if not usecase:
                 st.error("No usecase selected")
                 return
-
-            graph_builder=GraphBuilder(model)
+            tavily_key = user_input.get("TAVILY_API_KEY")
+            graph_builder = GraphBuilder(
+            model=model,
+            tavily_api_key=tavily_key
+            )
             try:
                 graph=graph_builder.setup_graph(usecase) 
                 DisplayResultStreamlit(usecase, graph, user_message).display_result_on_ui()

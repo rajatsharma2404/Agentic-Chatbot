@@ -26,3 +26,25 @@ class DisplayResultStreamlit:
 
                         with st.chat_message("assistant"):
                             st.write(ai_reply)
+
+        elif self.usecase == "Chatbot with Web":
+
+            with st.chat_message("user"):
+                st.write(self.user_message)
+
+            initial_state = {
+                "messages": [HumanMessage(content=self.user_message)]
+            }
+
+            res = self.graph.invoke(initial_state)
+
+            for message in res["messages"]:
+
+                if isinstance(message, ToolMessage):
+                    with st.chat_message("assistant"):
+                        st.write("🔧 Tool used:")
+                        st.write(message.content)
+
+                elif isinstance(message, AIMessage) and message.content:
+                    with st.chat_message("assistant"):
+                        st.write(message.content)
